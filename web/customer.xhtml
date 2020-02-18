@@ -1,0 +1,128 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition  xmlns="http://www.w3.org/1999/xhtml"
+                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./template.xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="formulariocliente">
+        <h:form id="customerform" styleClass="contact1-form validate-form"  >  
+            <p:messages id="messages" showDetail="true" closable="true" autoUpdate="true" style="margin-top: 2px; margin-bottom: 2px;"/>
+            
+            <p:panelGrid columns="2"  columnClasses="p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4, p-col-12 p-md-3 p-xl-2, p-col-12 p-md-9 p-xl-4" styleClass="customPanelGrid" >
+                
+                <p:outputLabel for="name" value="Nome" />
+                <p:inputText id="name" />
+                
+                <p:outputLabel for="email" value="E-mail" />
+                <p:inputText id="email" />
+                
+            </p:panelGrid>
+            <br/>
+            <p:panelGrid columns="1">
+                <p:commandButton value="New Address"  style="margin-right:20px;" styleClass="ui-priority-primary" />
+                <p:dataTable id="lstaddress" var="objaddress" value="#{CustomerBean.customer.address}" rows="10" style="margin-top: 30px; margin-bottom: 5px; min-width: 100%; max-width: 120%;"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                         <p:column headerText="Cep" width="50" filterStyle="width: 80px; font-size:10px;"  filterBy="#{objaddress.cep}" sortBy="#{objaddress.cep}">
+                          <h:outputText value="#{objaddress.cep}" />
+                        </p:column>
+                        <p:column headerText="Endereço" width="50" filterStyle="width: 80px; font-size:10px;"  filterBy="#{objaddress.logradourop}" sortBy="#{objaddress.logradouro}">
+                          <h:outputText value="#{objaddress.logradouro}" />
+                        </p:column>
+                        <p:column headerText="UF" width="50" filterStyle="width: 80px; font-size:10px;"  filterBy="#{objaddress.uf}" sortBy="#{objaddress.uf}">
+                          <h:outputText value="#{objaddress.uf}" />
+                        </p:column>
+                       <p:column headerText="" width="50" filterStyle="width: 80px; font-size:10px;" >
+                                <p:commandButton actionListener="#{CustomerBean.selecionarAddress}"
+                                              styleClass="btn btn-primary btn-circle" icon="fa fa-edit"
+                                              title="Editar Informações"
+                                              onclick="PF('dlgaguarde').show();">
+                                 <f:attribute name="objid" value="#{objaddress.id}" />
+                             </p:commandButton> 
+                             <p:commandButton actionListener="#{CustomerBean.selecionarAddress}"
+                                              styleClass="btn btn-primary btn-circle" icon="fa fa-edit"
+                                              title="Editar Informações"
+                                              onclick="PF('dlgaguarde').show();">
+                                 <f:attribute name="objid" value="#{objaddress.id}" />
+                             </p:commandButton> 
+                        </p:column>
+                 </p:dataTable>
+            </p:panelGrid>
+            
+            <p:commandButton value="Save" actionListener="#{customerBean.buscaColaborador}"  style="margin-right:20px;"  />  
+            <p:commandButton value="Update"  style="margin-right:20px;"  />  
+        </h:form>
+    </ui:define>
+
+    <ui:define name="listacliente">
+        <h:form id="customerlista" styleClass="contact1-form validate-form" > 
+            <p:dataTable id="tabescritorio" var="lstcustomer"  rows="10" style="margin-top: 30px; margin-bottom: 5px; min-width: 100%; max-width: 120%;"
+                         paginator="true" 
+                         paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         rowsPerPageTemplate="5,10,15">
+                
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+    
+    <p:dialog id="dlgAddress" header="Informações da Endereço" widgetVar="dlinfo" modal="true" resizable="true" width="80%" height="80%" closable="true" position="center,top">  
+            <h:form id="formaddress">
+                <p:scrollPanel style="width:100%; max-height: 500px; height:auto;">
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">Razão Social: </div>
+                        <div id="divform-2"><p:outputLabel id="razaosocial" value="#{empresaBean.empresa.razaosocial}"  /> </div>        
+                    </div>
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">Fantasia:  </div>
+                        <div id="divform-2"><p:outputLabel id="fantasia" value="#{empresaBean.empresa.fantasia}"  /></div>
+                    </div>
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">CNPJ:  </div>
+                        <div id="divform-2"><p:outputLabel id="cnpj" value="#{empresaBean.empresa.cnpj}" /></div>
+                    </div>
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">Inscrição Social: </div>
+                        <div id="divform-2"><p:outputLabel id="iestadual" value="#{empresaBean.empresa.inscricaoestadual}" style="width:80%; " /> </div>
+                    </div>
+                    <div id="linha-form" style="margin-top:3px;margin-bottom:380px;">
+                            <div id="divform-1">Enderaço:</div>
+                            <div id="divform-2">
+                                
+                                <p:scrollPanel style="width:80%;height:200px">
+                                    <p:outputLabel id="endereco" value="#{empresaBean.empresa.endereco}"  />
+                                </p:scrollPanel>
+                                
+                            </div>
+                    </div>
+                    
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">Cidade: </div>
+                        <div id="divform-2"><p:outputLabel id="cidade" value="#{empresaBean.empresa.cidade}"   /> </div>                            
+                    </div>
+                   <div id="linha-form" style="margin-top:3px;">
+                       <div id="divform-1">Estado: </div>
+                       <div id="divform-2"><p:outputLabel id="uf" value="#{empresaBean.empresa.estado}" /></div>
+                            
+                    </div>
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">Nome do Contato: </div>
+                        <div id="divform-2"><p:outputLabel id="contato" value=" #{empresaBean.empresa.responsavelcontato}"    /> </div>
+              
+                    </div>
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">E-mail: </div>
+                        <div id="divform-2"><p:outputLabel id="email" value="#{empresaBean.empresa.email}"    /></div>    
+                    </div>
+                    <div id="linha-form" style="margin-top:3px;">
+                        <div id="divform-1">Telefone: </div>
+                        <div id="divform-2"><p:outputLabel id="telefone" value="#{empresaBean.empresa.telefone}"    /></div> 
+                    </div>
+                </p:scrollPanel>
+                </h:form>
+        </p:dialog>
+
+</ui:composition>
